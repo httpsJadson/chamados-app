@@ -1,0 +1,118 @@
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/database/prisma.service';
+import bcrypt from 'bcryptjs'; 
+@Injectable()
+export class UsersService {
+  constructor(private readonly prisma: PrismaService ){}
+
+  async create(createUserDto: CreateUserDto) {
+    const password = createUserDto.password;
+      const hashPassword = await bcrypt.hash(password, 10);
+      const userCreated = await this.prisma.user.create({
+        data: {
+          email: createUserDto.email,
+          name: createUserDto.name,
+          password: hashPassword,
+          role: createUserDto.role,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          // Exclude password from response
+        },
+      });
+      return userCreated;
+  }
+
+  async findAll() {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        // Exclude password
+      },
+    });
+  }
+async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true
+        // Exclude password
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const data: any = {};
+
+      if (updateUserDto.name !== undefined) {
+        data.name = updateUserDto.name;
+      }
+
+      if (updateUserDto.email !== undefined) {
+        // Check if email is already taken by another user
+        const existingUser = await this.prisma.user.findUnique({
+          where: { email: updateUserDto.email },
+        });
+        if (existingUser && existingUser.id !== id) {
+          throw new BadRequestException('Email already exists');
+        }
+        data.email = updateUserDto.email;
+      }
+
+      if (updateUserDto.password !== undefined) {
+        data.password = await bcrypt.hash(updateUserDto.password, 10);
+      }
+
+      const updatedUser = await this.prisma.user.update({
+        where: { id },
+        data,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          // Exclude password from response
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      }
+      throw new InternalServerErrorException('Failed to update user');
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      await this.prisma.user.delete({
+        where: { id },
+      });
+      return { message: `User with ID ${id} deleted successfully` };
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      }
+      if (error.code === 'P2002') {
+        throw new BadRequestException('Email already exists');
+      }
+      throw new InternalServerErrorException('Failed to delete user');
+    }
+  }
+}
