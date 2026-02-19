@@ -3,12 +3,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import bcrypt from 'bcryptjs'; 
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService ){}
 
   async create(createUserDto: CreateUserDto) {
-    const password = createUserDto.password;
+
+    try {
+      const password = createUserDto.password;
       const hashPassword = await bcrypt.hash(password, 10);
       const userCreated = await this.prisma.user.create({
         data: {
@@ -26,10 +29,22 @@ export class UsersService {
         },
       });
       return userCreated;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('Email already exists');
+      }
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
     return this.prisma.user.findMany({
+      take: limit,
+      skip: offset,
+      orderBy: {
+        createdAt: "desc",
+      },
       select: {
         id: true,
         name: true,
@@ -39,22 +54,22 @@ export class UsersService {
       },
     });
   }
-async findOne(id: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true
-        // Exclude password
-      },
-    });
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+  async findOne(id: string) {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true
+          // Exclude password
+        },
+      });
+      if (!user) {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      }
+      return user;
     }
-    return user;
-  }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
 
 @Controller('tickets')
 export class TicketsController {
@@ -19,16 +20,21 @@ export class TicketsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(+id);
+    return this.ticketsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(+id, updateTicketDto);
+    return this.ticketsService.update(id, updateTicketDto);
+  }
+
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: string, @Body() updateTicketStatusDto: UpdateTicketStatusDto) {
+    return this.ticketsService.updateStatus(id, updateTicketStatusDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ticketsService.remove(+id);
+    return this.ticketsService.remove(id);
   }
 }
