@@ -24,11 +24,15 @@ model User {
 
 model Ticket {
   id           String         @id @default(uuid())
+
   title        String
   description  String
+
   status       TicketStatus   @default(OPEN)
   priority     TicketPriority @default(MEDIUM)
+
   createdById  String
+  
   assignedToId String?
   closedAt     DateTime?
   createdAt    DateTime       @default(now())

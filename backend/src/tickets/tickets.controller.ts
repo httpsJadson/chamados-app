@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
+import { UpdateTicketPriorityDto } from './dto/update-ticket-priority';
+import { UpdateTicketAssignedDto } from './dto/update-ticket-assingned';
 
 @Controller('tickets')
 export class TicketsController {
@@ -23,9 +24,14 @@ export class TicketsController {
     return this.ticketsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(id, updateTicketDto);
+  @Patch(':id/priority')
+  updatePriority(@Param('id') id: string, @Body() updateTicketPriorityDto: UpdateTicketPriorityDto) {
+    return this.ticketsService.updatePriority(id, updateTicketPriorityDto);
+  }
+
+  @Patch(':id/assigned')
+  updateAssigned(@Param('id') id: string, @Body() updateTicketAssignedDto: UpdateTicketAssignedDto) {
+    return this.ticketsService.updateAssigned(id, updateTicketAssignedDto);
   }
 
   @Patch(':id/status')

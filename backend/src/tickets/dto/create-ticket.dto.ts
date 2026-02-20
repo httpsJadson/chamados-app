@@ -9,19 +9,7 @@ export class CreateTicketDto {
   @IsString()
   description: string;
 
-  @IsOptional()
-  @IsEnum(TicketPriority)
-  priority?: TicketPriority;
-
-  @IsString()
-  @IsOptional()
-  diagnosis?: string;
-
   @IsUUID()
   createdById: string;
-
-  @IsOptional()
-  @IsUUID()
-  assignedToId?: string;
 }
 
