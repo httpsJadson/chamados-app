@@ -15,6 +15,7 @@ model User {
   password        String
   role            Role      @default(EMPLOYEE)
   updatedAt       DateTime  @updatedAt
+  perfilUrl       String?
   messages        Message[]
   assignedTickets Ticket[]  @relation("AssignedTickets")
   createdTickets  Ticket[]  @relation("CreatedTickets")

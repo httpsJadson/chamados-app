@@ -24,6 +24,7 @@ export class UsersService {
           id: true,
           name: true,
           email: true,
+          perfilUrl: true,
           role: true,
           // Exclude password from response
         },
@@ -50,6 +51,7 @@ export class UsersService {
         name: true,
         email: true,
         role: true,
+        perfilUrl: true,  
         // Exclude password
       },
     });
@@ -61,7 +63,8 @@ export class UsersService {
           id: true,
           name: true,
           email: true,
-          role: true
+          role: true,
+          perfilUrl: true,
           // Exclude password
         },
       });
