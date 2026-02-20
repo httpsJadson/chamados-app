@@ -11,14 +11,15 @@ model User {
   id              String    @id @default(uuid())
   email           String    @unique
   name            String
-  createdAt       DateTime  @default(now())
   password        String
   role            Role      @default(EMPLOYEE)
-  updatedAt       DateTime  @updatedAt
   perfilUrl       String?
+  
   messages        Message[]
   assignedTickets Ticket[]  @relation("AssignedTickets")
   createdTickets  Ticket[]  @relation("CreatedTickets")
+  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime  @default(now())
 }
 
 model Ticket {

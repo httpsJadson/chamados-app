@@ -45,6 +45,7 @@ export class UsersService {
       skip: offset,
       orderBy: {
         createdAt: "desc",
+
       },
       select: {
         id: true,
@@ -105,6 +106,7 @@ export class UsersService {
           name: true,
           email: true,
           role: true,
+          perfilUrl: true
           // Exclude password from response
         },
       });

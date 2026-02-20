@@ -14,4 +14,7 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(Role)
   role?: Role;
+
+  @IsOptional()
+  perfilUrl?: string;
 }
