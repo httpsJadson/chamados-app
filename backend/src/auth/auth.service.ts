@@ -1,25 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { LoginDto } from './dto/login.dto';
+import { PrismaService } from 'src/database/prisma.service';
+import { HashingServiceProtocol } from './hashing/hashing.service';
 
 
 @Injectable()
 export class AuthService {
-  create() {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hashingService: HashingServiceProtocol,
+  ) {}
+
+  async login(loginDto: LoginDto) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: loginDto.email,
+      },
+    });
+
+    if (user) {
+      const passwordIsValid = await this.hashingService.compare(
+        loginDto.password,
+        user.password,
+      );
+      passwordIsValid ? true : this.unauthorized();
+
+    } else {
+      this.unauthorized();
+    }
+
+    return {
+      message: "Login successful",
+    };
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  unauthorized() {
+    throw new UnauthorizedException("Invalid email or password");
   }
 }
