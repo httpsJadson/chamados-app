@@ -4,15 +4,20 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import bcrypt from 'bcryptjs'; 
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { HashingServiceProtocol } from 'src/auth/hashing/hashing.service';
+
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService ){}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hashingService: HashingServiceProtocol
+   ){}
 
   async create(createUserDto: CreateUserDto) {
 
     try {
       const password = createUserDto.password;
-      const hashPassword = await bcrypt.hash(password, 10);
+      const hashPassword = await this.hashingService.hash(password);
       const userCreated = await this.prisma.user.create({
         data: {
           email: createUserDto.email,
