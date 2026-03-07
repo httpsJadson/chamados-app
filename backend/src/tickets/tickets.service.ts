@@ -5,6 +5,8 @@ import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
 import { UpdateTicketPriorityDto } from './dto/update-ticket-priority';
 import { UpdateTicketAssignedDto } from './dto/update-ticket-assingned';
 import { UsersService } from 'src/users/users.service';
+import { Request } from 'express';
+import { REQUEST_TOKEN_PAYLOAD_KEY } from 'src/auth/auth.constants';
 
 @Injectable()
 export class TicketsService {
@@ -12,12 +14,14 @@ export class TicketsService {
     private prisma: PrismaService,
     private usersService: UsersService) {}
 
-  async create(createTicketDto: CreateTicketDto) {
-    const { createdById, ...data } = createTicketDto;
+  async create(createTicketDto: CreateTicketDto, req: Request) {
+    const {...data } = createTicketDto;
+    const createdBy = req['sub'];
+
     return this.prisma.ticket.create({
       data: {
         ...data,
-        createdById,
+        createdById: createdBy,
       },
       select: {
         id: true,
@@ -217,18 +221,11 @@ export class TicketsService {
     });
   }
 
-  async updateAssigned(id: string, updateTicketAssignedDto: UpdateTicketAssignedDto) {
-    const assignedId = updateTicketAssignedDto.assignedToId;
-    if(!assignedId) {
-      throw new BadRequestException('Assigned user ID is required');
-    }
+  async updateAssigned(id: string, req: Request) {
 
-    const assignedUser = await this.usersService.findOne(assignedId);
-    if (!assignedUser) {
-      throw new BadRequestException('Assigned user not found');
-    }
+    const assignedId = req['sub'];
 
-    if (assignedUser.role !== 'TECHNICIAN') {
+    if (req['role'] !== 'TECHNICIAN') {
       throw new BadRequestException('Assigned user must have TECHNICIAN role');
     }
 

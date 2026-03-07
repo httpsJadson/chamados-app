@@ -1,9 +1,16 @@
 @baseurl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDkyOGM5MS1kNTQwLTRjNDQtYjVkZC03Y2NiYzA3ZWZmMjAiLCJlbWFpbCI6ImZ1bmNpb25hcmlvLnRlc3RlMkBlbXByZXNhLmNvbSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc3MjkwMjg5NCwiZXhwIjoxNzcyOTA2NDk0LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.vXyeSLdYhQ1CjmkxW5dK1hqCJpfC91Y3PdlQzxLSeRE
+
+@employee = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDkyOGM5MS1kNTQwLTRjNDQtYjVkZC03Y2NiYzA3ZWZmMjAiLCJlbWFpbCI6ImZ1bmNpb25hcmlvLnRlc3RlMkBlbXByZXNhLmNvbSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc3MjkxMDEyNiwiZXhwIjoxNzczNTE0OTI2LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.DfziC8OBruwTTGNbvYZPDdj2uTrfdZ6JyWiaMc-9o-Y
+
+@admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODVlZDg5Yi04NTg2LTQxNzUtYmNiNC00ZjQ3YjQ5ZGJiOWUiLCJlbWFpbCI6ImphZHNvbi50ZXN0ZUBlbXByZXNhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjkxMDIwNiwiZXhwIjoxNzczNTE1MDA2LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.nMmyXNp7kGazEFvcFFLRrhljxxsnhYWzOjsiQw14LIQ
+
+@tecnico = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWI2M2M1MC05OTI2LTRhNzYtYjFjYy1mYmIzZjYzNTFiMjQiLCJlbWFpbCI6InRlY25pY28udGVzdGVAZW1wcmVzYS5jb20iLCJyb2xlIjoiVEVDSE5JQ0lBTiIsImlhdCI6MTc3MjkxMDI3MCwiZXhwIjoxNzczNTE1MDcwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.EPuLvQmCsiYpE9Q4gcJyjdoROIAZvzk4ixSflLw33yc
+
+@tecnico2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OTU3OGYxNS1jZjlhLTQ1MWQtYWZjOS02ZWY1YTAxYTllMjciLCJlbWFpbCI6InRlY25pY28udGVzdGUyQGVtcHJlc2EuY29tIiwicm9sZSI6IlRFQ0hOSUNJQU4iLCJpYXQiOjE3NzI5MTE2MDgsImV4cCI6MTc3MzUxNjQwOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.nMKlTEQlq0UjFTYqeI8MAgDxLL8QQZ2k4wHbsY4l9X8
 
 @userId = 
 
-@ticketId =
+@ticketId = 1c3d0d1f-a469-4956-aa88-89054aebc675
 
 @messageId =
 
@@ -12,7 +19,7 @@ POST {{baseurl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "funcionario.teste2@empresa.com",
+  "email": "tecnico.teste2@empresa.com",
   "password": "123456"
 }
 
@@ -20,27 +27,27 @@ Content-Type: application/json
 
 # List users (requires JWT)
 GET {{baseurl}}/users
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{employee}}
 
 ### Create user
 POST {{baseurl}}/users
-Authorization: Bearer {{token}}
+Authorization: Bearer {{admin}}
 Content-Type: application/json
 
 {
   "name": "Funcionário Teste",
-  "email": "funcionario.teste3@empresa.com",
+  "email": "tecnico.teste2@empresa.com",
   "password": "123456",
-  "role": "EMPLOYEE"
+  "role": "TECHNICIAN"
 }
 
 ### Update user
 PATCH {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 Content-Type: application/json
 
 {
@@ -50,51 +57,44 @@ Content-Type: application/json
 
 # Delete user
 DELETE {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 ### Tickets
 
 # Create ticket
 POST {{baseurl}}/tickets
-Authorization: Bearer {{token}}
+Authorization: Bearer {{employee}}
 Content-Type: application/json
 
 {
-  "title": "",
-  "description": "",
-  "priority": "",
-  "createbyId": ""
+  "title": "Preciso de ajuda",
+  "description": "Estou com problemas para acessar o sistema."
 }
 
-# List tickets
+### List tickets
 GET {{baseurl}}/tickets
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tecnico}}
 
-# Get ticket by id
+### Get ticket by id
 GET {{baseurl}}/tickets/{{ticketId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 # Update ticket priority
 PATCH {{baseurl}}/tickets/{{ticketId}}/priority
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 Content-Type: application/json
 
 {
   "priority": ""
 }
 
-# Update ticket assigned
+### Update ticket assigned
 PATCH {{baseurl}}/tickets/{{ticketId}}/assigned
-Authorization: Bearer {{token}}
-Content-Type: application/json
+Authorization: Bearer {{tecnico2}}
 
-{
-  "assignedToId": ""
-}
-
-# Update ticket status
+### Update ticket status
 PATCH {{baseurl}}/tickets/{{ticketId}}/status
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 Content-Type: application/json
 
 {
@@ -103,13 +103,13 @@ Content-Type: application/json
 
 # Delete ticket
 DELETE {{baseurl}}/tickets/{{ticketId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 ### Messages
 
 # Create message
 POST {{baseurl}}/messages
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 Content-Type: application/json
 
 {
@@ -119,15 +119,15 @@ Content-Type: application/json
 
 # List messages
 GET {{baseurl}}/messages
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 # Get message by id
 GET {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 
 # Update message
 PATCH {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}
 Content-Type: application/json
 
 {
@@ -136,4 +136,4 @@ Content-Type: application/json
 
 # Delete message
 DELETE {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{token}}
+Authorization: Bearer {{}}

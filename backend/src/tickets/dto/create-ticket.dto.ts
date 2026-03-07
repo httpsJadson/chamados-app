@@ -1,5 +1,4 @@
-import { IsEnum, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
-import { TicketPriority } from '@prisma/client';
+import {IsString, MaxLength } from 'class-validator';
 
 export class CreateTicketDto {
   @IsString()
@@ -9,7 +8,5 @@ export class CreateTicketDto {
   @IsString()
   description: string;
 
-  @IsUUID()
-  createdById: string;
 }
 

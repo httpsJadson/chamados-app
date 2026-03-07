@@ -27,7 +27,7 @@ export class AuthTokenGuard implements CanActivate {
                 this.jwtConfiguration,
 
             );
-            console.log("Token validado com sucesso!");
+            // console.log("Token validado com sucesso!");
             request[REQUEST_TOKEN_PAYLOAD_KEY] = payload;
 
         } catch (error) {
