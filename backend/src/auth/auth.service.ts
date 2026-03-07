@@ -23,6 +23,7 @@ export class AuthService {
         email: loginDto.email,
       },
     });
+    // console.log(user)
 
     if (user) {
       const passwordIsValid = await this.hashingService.compare(
@@ -33,7 +34,8 @@ export class AuthService {
       const accessToken = await this.jwtService.signAsync(
         {
           sub: user.id,
-          email: user.email
+          email: user.email,
+          role: user.role
         },
         {
           audience: this.jwtConfiguration.audi,

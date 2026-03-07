@@ -1,0 +1,139 @@
+@baseurl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiZDkyOGM5MS1kNTQwLTRjNDQtYjVkZC03Y2NiYzA3ZWZmMjAiLCJlbWFpbCI6ImZ1bmNpb25hcmlvLnRlc3RlMkBlbXByZXNhLmNvbSIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc3MjkwMjg5NCwiZXhwIjoxNzcyOTA2NDk0LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.vXyeSLdYhQ1CjmkxW5dK1hqCJpfC91Y3PdlQzxLSeRE
+
+@userId = 
+
+@ticketId =
+
+@messageId =
+
+### Authenticate / login
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "funcionario.teste2@empresa.com",
+  "password": "123456"
+}
+
+### Users
+
+# List users (requires JWT)
+GET {{baseurl}}/users
+Authorization: Bearer {{token}}
+
+### Get a single user
+GET {{baseurl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+
+### Create user
+POST {{baseurl}}/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Funcionário Teste",
+  "email": "funcionario.teste3@empresa.com",
+  "password": "123456",
+  "role": "EMPLOYEE"
+}
+
+### Update user
+PATCH {{baseurl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": ""
+}
+
+# Delete user
+DELETE {{baseurl}}/users/{{userId}}
+Authorization: Bearer {{token}}
+
+### Tickets
+
+# Create ticket
+POST {{baseurl}}/tickets
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "",
+  "priority": "",
+  "createbyId": ""
+}
+
+# List tickets
+GET {{baseurl}}/tickets
+Authorization: Bearer {{token}}
+
+# Get ticket by id
+GET {{baseurl}}/tickets/{{ticketId}}
+Authorization: Bearer {{token}}
+
+# Update ticket priority
+PATCH {{baseurl}}/tickets/{{ticketId}}/priority
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "priority": ""
+}
+
+# Update ticket assigned
+PATCH {{baseurl}}/tickets/{{ticketId}}/assigned
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignedToId": ""
+}
+
+# Update ticket status
+PATCH {{baseurl}}/tickets/{{ticketId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": ""
+}
+
+# Delete ticket
+DELETE {{baseurl}}/tickets/{{ticketId}}
+Authorization: Bearer {{token}}
+
+### Messages
+
+# Create message
+POST {{baseurl}}/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "content": "",
+  "ticketId": ""
+}
+
+# List messages
+GET {{baseurl}}/messages
+Authorization: Bearer {{token}}
+
+# Get message by id
+GET {{baseurl}}/messages/{{messageId}}
+Authorization: Bearer {{token}}
+
+# Update message
+PATCH {{baseurl}}/messages/{{messageId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "content": ""
+}
+
+# Delete message
+DELETE {{baseurl}}/messages/{{messageId}}
+Authorization: Bearer {{token}}
