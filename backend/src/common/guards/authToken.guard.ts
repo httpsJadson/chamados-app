@@ -29,6 +29,7 @@ export class AuthTokenGuard implements CanActivate {
             );
             // console.log("Token validado com sucesso!");
             request[REQUEST_TOKEN_PAYLOAD_KEY] = payload;
+            // id, email, role
 
         } catch (error) {
             throw new UnauthorizedException(error.message);

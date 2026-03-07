@@ -6,14 +6,14 @@
 
 @tecnico = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWI2M2M1MC05OTI2LTRhNzYtYjFjYy1mYmIzZjYzNTFiMjQiLCJlbWFpbCI6InRlY25pY28udGVzdGVAZW1wcmVzYS5jb20iLCJyb2xlIjoiVEVDSE5JQ0lBTiIsImlhdCI6MTc3MjkxMDI3MCwiZXhwIjoxNzczNTE1MDcwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.EPuLvQmCsiYpE9Q4gcJyjdoROIAZvzk4ixSflLw33yc
 
-@userId = 
+@userId = bd928c91-d540-4c44-b5dd-7ccbc07eff20
 
 @ticketId = 1c3d0d1f-a469-4956-aa88-89054aebc675
 
 @messageId =
 
 ### Authenticate / login
-POST {{baseurl}}/auth/login
+POST {{baseurl}}/auth/login?offset=10&limit=10&order=DESC
 Content-Type: application/json
 
 {
@@ -25,11 +25,11 @@ Content-Type: application/json
 
 # List users (requires JWT)
 GET {{baseurl}}/users
-Authorization: Bearer {{}}
+Authorization: Bearer {{admin}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{employee}}
+Authorization: Bearer {{tecnico}}
 
 ### Create user
 POST {{baseurl}}/users
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 {
   "name": "Funcionário Teste",
-  "email": "tecnico.teste2@empresa.com",
+  "email": "tecnico.teste3@empresa.com",
   "password": "123456",
   "role": "TECHNICIAN"
 }

@@ -5,6 +5,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import bcrypt from 'bcryptjs'; 
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { HashingServiceProtocol } from 'src/auth/hashing/hashing.service';
+import { Request } from 'express';
 
 @Injectable()
 export class UsersService {
@@ -62,7 +63,8 @@ export class UsersService {
       },
     });
   }
-  async findOne(id: string) {
+  async findOne(id: string, req: Request) {
+      if (id !== req['sub']) return new BadRequestException('You are not allowed to view this user');
       const user = await this.prisma.user.findUnique({
         where: { id },
         select: {
