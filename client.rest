@@ -6,8 +6,6 @@
 
 @tecnico = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWI2M2M1MC05OTI2LTRhNzYtYjFjYy1mYmIzZjYzNTFiMjQiLCJlbWFpbCI6InRlY25pY28udGVzdGVAZW1wcmVzYS5jb20iLCJyb2xlIjoiVEVDSE5JQ0lBTiIsImlhdCI6MTc3MjkxMDI3MCwiZXhwIjoxNzczNTE1MDcwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.EPuLvQmCsiYpE9Q4gcJyjdoROIAZvzk4ixSflLw33yc
 
-@tecnico2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5OTU3OGYxNS1jZjlhLTQ1MWQtYWZjOS02ZWY1YTAxYTllMjciLCJlbWFpbCI6InRlY25pY28udGVzdGUyQGVtcHJlc2EuY29tIiwicm9sZSI6IlRFQ0hOSUNJQU4iLCJpYXQiOjE3NzI5MTE2MDgsImV4cCI6MTc3MzUxNjQwOCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.nMKlTEQlq0UjFTYqeI8MAgDxLL8QQZ2k4wHbsY4l9X8
-
 @userId = 
 
 @ticketId = 1c3d0d1f-a469-4956-aa88-89054aebc675
@@ -90,7 +88,7 @@ Content-Type: application/json
 
 ### Update ticket assigned
 PATCH {{baseurl}}/tickets/{{ticketId}}/assigned
-Authorization: Bearer {{tecnico2}}
+Authorization: Bearer {{tecnico}}
 
 ### Update ticket status
 PATCH {{baseurl}}/tickets/{{ticketId}}/status
@@ -101,7 +99,16 @@ Content-Type: application/json
   "status": ""
 }
 
-# Delete ticket
+### Update Diagnoses
+PATCH {{baseurl}}/tickets/{{ticketId}}/diagnosis
+Authorization: Bearer {{admin}}
+Content-Type: application/json
+
+{
+  "diagnosis": "Alarme Falso"
+}
+
+### Delete ticket
 DELETE {{baseurl}}/tickets/{{ticketId}}
 Authorization: Bearer {{}}
 

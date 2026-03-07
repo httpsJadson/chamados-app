@@ -3,16 +3,15 @@ import { PrismaService } from '../database/prisma.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketStatusDto } from './dto/update-ticket-status.dto';
 import { UpdateTicketPriorityDto } from './dto/update-ticket-priority';
-import { UpdateTicketAssignedDto } from './dto/update-ticket-assingned';
-import { UsersService } from 'src/users/users.service';
+import { UpdateTicketDiagnosisDto } from './dto/update-ticket-diagosis.dto';
 import { Request } from 'express';
-import { REQUEST_TOKEN_PAYLOAD_KEY } from 'src/auth/auth.constants';
+
 
 @Injectable()
 export class TicketsService {
   constructor(
     private prisma: PrismaService,
-    private usersService: UsersService) {}
+  ){}
 
   async create(createTicketDto: CreateTicketDto, req: Request) {
     const {...data } = createTicketDto;
@@ -282,6 +281,54 @@ export class TicketsService {
     if (updateTicketStatusDto.status === 'CLOSED') {
       updateData.closedAt = new Date();
     }
+    return this.prisma.ticket.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        status: true,
+        priority: true,
+        closedAt: true,
+        createdAt: true,
+        updatedAt: true,
+        diagnosis: true,
+        createdBy: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+          },
+        },
+        assignedTo: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+          },
+        },
+        messages: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+  
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async updateDiagnosis(id: string, updateTicketDiagnosisDto: UpdateTicketDiagnosisDto) {
+    const updateData: any = { diagnosis: updateTicketDiagnosisDto.diagnosis };
     return this.prisma.ticket.update({
       where: { id },
       data: updateData,
