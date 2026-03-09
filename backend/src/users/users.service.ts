@@ -51,7 +51,6 @@ export class UsersService {
       skip: offset,
       orderBy: {
         createdAt: "desc",
-
       },
       select: {
         id: true,
@@ -63,8 +62,12 @@ export class UsersService {
       },
     });
   }
+
   async findOne(id: string, req: Request) {
-      if (id !== req['sub']) return new BadRequestException('You are not allowed to view this user');
+    
+      if (id !== req['sub'] && req['role'] !== 'ADMIN'){ 
+        throw new BadRequestException('You are not allowed to view this user');
+      }
       const user = await this.prisma.user.findUnique({
         where: { id },
         select: {
@@ -80,7 +83,7 @@ export class UsersService {
         throw new NotFoundException(`User with ID ${id} not found`);
       }
       return user;
-    }
+  }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
