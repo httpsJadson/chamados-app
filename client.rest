@@ -25,7 +25,7 @@ Content-Type: application/json
 
 # List users (requires JWT)
 GET {{baseurl}}/users
-Authorization: Bearer {{admin}}
+Authorization: Bearer {{tecnico}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
@@ -114,21 +114,21 @@ Authorization: Bearer {{}}
 
 ### Messages
 
-# Create message
+### Create message
 POST {{baseurl}}/messages
-Authorization: Bearer {{}}
+Authorization: Bearer {{employee}}
 Content-Type: application/json
 
 {
-  "content": "",
-  "ticketId": ""
+  "content": "Você pode vir a minha mesa?",
+  "ticketId": "{{ticketId}}"
 }
 
-# List messages
-GET {{baseurl}}/messages
-Authorization: Bearer {{}}
+### List messages
+GET {{baseurl}}/messages/{{ticketId}}
+Authorization: Bearer {{employee}}
 
-# Get message by id
+### Get message by id
 GET {{baseurl}}/messages/{{messageId}}
 Authorization: Bearer {{}}
 

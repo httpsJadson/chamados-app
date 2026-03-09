@@ -64,7 +64,7 @@ export class UsersService {
   }
 
   async findOne(id: string, req: Request) {
-    
+
       if (id !== req['sub'] && req['role'] !== 'ADMIN'){ 
         throw new BadRequestException('You are not allowed to view this user');
       }
@@ -94,7 +94,6 @@ export class UsersService {
       }
 
       if (updateUserDto.email !== undefined) {
-        // Check if email is already taken by another user
         const existingUser = await this.prisma.user.findUnique({
           where: { email: updateUserDto.email },
         });
