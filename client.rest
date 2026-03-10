@@ -8,7 +8,7 @@
 
 @userId = bd928c91-d540-4c44-b5dd-7ccbc07eff20
 
-@ticketId = 1c3d0d1f-a469-4956-aa88-89054aebc675
+@ticketId = a1cf9a3b-1c54-4731-a59a-3d00ee87b18f
 
 @messageId =
 
@@ -23,13 +23,13 @@ Content-Type: application/json
 
 ### Users
 
-# List users (requires JWT)
+### List users (requires JWT)
 GET {{baseurl}}/users
 Authorization: Bearer {{tecnico}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{tecnico}}
+Authorization: Bearer {{admin}}
 
 ### Create user
 POST {{baseurl}}/users
@@ -53,7 +53,7 @@ Content-Type: application/json
   "email": ""
 }
 
-# Delete user
+### Delete user
 DELETE {{baseurl}}/users/{{userId}}
 Authorization: Bearer {{}}
 
@@ -125,22 +125,6 @@ Content-Type: application/json
 }
 
 ### List messages
-GET {{baseurl}}/messages/{{ticketId}}
-Authorization: Bearer {{employee}}
+GET {{baseurl}}/messages/a1cf9a3b-1c54-4731-a59a-3d00ee87b18f
+Authorization: Bearer {{admin}}
 
-### Get message by id
-GET {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{}}
-
-# Update message
-PATCH {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{}}
-Content-Type: application/json
-
-{
-  "content": ""
-}
-
-# Delete message
-DELETE {{baseurl}}/messages/{{messageId}}
-Authorization: Bearer {{}}
