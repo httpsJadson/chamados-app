@@ -25,11 +25,11 @@ Content-Type: application/json
 
 ### List users (requires JWT)
 GET {{baseurl}}/users
-Authorization: Bearer {{tecnico}}
+Authorization: Bearer {{employee}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{admin}}
+Authorization: Bearer {{tecnico}}
 
 ### Create user
 POST {{baseurl}}/users

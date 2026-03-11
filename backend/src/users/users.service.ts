@@ -63,26 +63,24 @@ export class UsersService {
     });
   }
 
-  async findOne(id: string, req: Request) {
+  async findOne(id: string) {
 
-      if (id !== req['sub'] && req['role'] !== 'ADMIN'){ 
-        throw new BadRequestException('You are not allowed to view this user');
-      }
-      const user = await this.prisma.user.findUnique({
-        where: { id },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          perfilUrl: true,
-          // Exclude password
-        },
-      });
-      if (!user) {
-        throw new NotFoundException(`User with ID ${id} not found`);
-      }
-      return user;
+    console.log(id)
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        perfilUrl: true,
+        // Exclude password
+      },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

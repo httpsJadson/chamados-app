@@ -84,10 +84,6 @@ export class MessagesService {
           createdAt: true,
           ticket: {
             select:{
-              id: true,
-              title: true,
-              priority: true,
-              status: true,
               assignedTo:{
                 select: {
                   id: true,

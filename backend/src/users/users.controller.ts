@@ -8,8 +8,6 @@ import { ApiBearerAuth } from '@nestjs/swagger/dist/decorators/api-bearer.decora
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Role } from './users.enum';
-import type Request  from 'express';
-import { REQUEST_TOKEN_PAYLOAD_KEY } from 'src/auth/auth.constants';
 
 @UseGuards(AuthTokenGuard, RolesGuard)
 @Roles(Role.ADMIN, Role.USER, Role.TECH)
@@ -24,23 +22,23 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Roles(Role.ADMIN)
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.usersService.findAll(paginationDto);
   }
 
-  @Roles(Role.ADMIN, Role.USER, Role.TECH)
   @Get(':id')
-  findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.usersService.findOne(id, req[REQUEST_TOKEN_PAYLOAD_KEY]);
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
