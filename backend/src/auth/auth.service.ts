@@ -44,8 +44,16 @@ export class AuthService {
           expiresIn: this.jwtConfiguration.jwtTTL,
         }
       );
-       return {
-        accessToken,
+      // console.log(accessToken)
+      return {  
+        access_token: accessToken,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          perfilUrl: user.perfilUrl,
+        }
       }
     } else {
       this.unauthorized();
