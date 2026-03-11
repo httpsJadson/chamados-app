@@ -5,19 +5,32 @@ import { Message, messageService } from '@/lib/message-service';
 import { useAuthStore } from '@/lib/auth-store';
 import { useEffect, useState } from 'react';
 
+const statusMap: Record<string, string> = {
+  OPEN: 'Aberto',
+  IN_PROGRESS: 'Em Progresso',
+  WAITING_CUSTOMER: 'Aguardando Cliente',
+  RESOLVED: 'Resolvido',
+  CLOSED: 'Fechado',
+};
+
 const statusColors: Record<string, string> = {
-  ABERTO: 'bg-blue-100 text-blue-800',
-  ATRIBUIDO: 'bg-yellow-100 text-yellow-800',
-  EM_PROGRESSO: 'bg-orange-100 text-orange-800',
-  RESOLVIDO: 'bg-green-100 text-green-800',
-  FECHADO: 'bg-gray-100 text-gray-800',
+  OPEN: 'bg-blue-100 text-blue-800',
+  IN_PROGRESS: 'bg-orange-100 text-orange-800',
+  WAITING_CUSTOMER: 'bg-yellow-100 text-yellow-800',
+  RESOLVED: 'bg-green-100 text-green-800',
+  CLOSED: 'bg-gray-100 text-gray-800',
+};
+
+const priorityMap: Record<string, string> = {
+  LOW: 'Baixa',
+  MEDIUM: 'Média',
+  HIGH: 'Alta',
 };
 
 const priorityColors: Record<string, string> = {
-  BAIXA: 'bg-green-100 text-green-800',
-  MEDIA: 'bg-yellow-100 text-yellow-800',
-  ALTA: 'bg-red-100 text-red-800',
-  CRITICA: 'bg-red-600 text-white',
+  LOW: 'bg-green-100 text-green-800',
+  MEDIUM: 'bg-yellow-100 text-yellow-800',
+  HIGH: 'bg-red-100 text-red-800',
 };
 
 interface TicketDetailsProps {
@@ -144,14 +157,14 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
                 statusColors[ticket.status]
               }`}
             >
-              {ticket.status}
+              {statusMap[ticket.status]}
             </span>
             <span
               className={`px-3 py-1 rounded-lg text-sm font-semibold ${
                 priorityColors[ticket.priority]
               }`}
             >
-              {ticket.priority}
+              {priorityMap[ticket.priority]}
             </span>
           </div>
         </div>
@@ -176,11 +189,11 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
                   onChange={(e) => setNewStatus(e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 >
-                  <option value="ABERTO">Aberto</option>
-                  <option value="ATRIBUIDO">Atribuído</option>
-                  <option value="EM_PROGRESSO">Em Progresso</option>
-                  <option value="RESOLVIDO">Resolvido</option>
-                  <option value="FECHADO">Fechado</option>
+                  <option value="OPEN">Aberto</option>
+                  <option value="IN_PROGRESS">Em Progresso</option>
+                  <option value="WAITING_CUSTOMER">Aguardando Cliente</option>
+                  <option value="RESOLVED">Resolvido</option>
+                  <option value="CLOSED">Fechado</option>
                 </select>
                 <button
                   onClick={handleStatusChange}
@@ -201,10 +214,9 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
                   onChange={(e) => setNewPriority(e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 >
-                  <option value="BAIXA">Baixa</option>
-                  <option value="MEDIA">Média</option>
-                  <option value="ALTA">Alta</option>
-                  <option value="CRITICA">Crítica</option>
+                  <option value="LOW">Baixa</option>
+                  <option value="MEDIUM">Média</option>
+                  <option value="HIGH">Alta</option>
                 </select>
                 <button
                   onClick={handlePriorityChange}

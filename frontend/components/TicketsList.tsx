@@ -5,19 +5,32 @@ import { useAuthStore } from '@/lib/auth-store';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+const statusMap: Record<string, string> = {
+  OPEN: 'Aberto',
+  IN_PROGRESS: 'Em Progresso',
+  WAITING_CUSTOMER: 'Aguardando Cliente',
+  RESOLVED: 'Resolvido',
+  CLOSED: 'Fechado',
+};
+
 const statusColors: Record<string, string> = {
-  ABERTO: 'bg-blue-100 text-blue-800',
-  ATRIBUIDO: 'bg-yellow-100 text-yellow-800',
-  EM_PROGRESSO: 'bg-orange-100 text-orange-800',
-  RESOLVIDO: 'bg-green-100 text-green-800',
-  FECHADO: 'bg-gray-100 text-gray-800',
+  OPEN: 'bg-blue-100 text-blue-800',
+  IN_PROGRESS: 'bg-orange-100 text-orange-800',
+  WAITING_CUSTOMER: 'bg-yellow-100 text-yellow-800',
+  RESOLVED: 'bg-green-100 text-green-800',
+  CLOSED: 'bg-gray-100 text-gray-800',
+};
+
+const priorityMap: Record<string, string> = {
+  LOW: 'Baixa',
+  MEDIUM: 'Média',
+  HIGH: 'Alta',
 };
 
 const priorityColors: Record<string, string> = {
-  BAIXA: 'bg-green-100 text-green-800',
-  MEDIA: 'bg-yellow-100 text-yellow-800',
-  ALTA: 'bg-red-100 text-red-800',
-  CRITICA: 'bg-red-600 text-white',
+  LOW: 'bg-green-100 text-green-800',
+  MEDIUM: 'bg-yellow-100 text-yellow-800',
+  HIGH: 'bg-red-100 text-red-800',
 };
 
 export default function TicketsList() {
@@ -56,7 +69,7 @@ export default function TicketsList() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div id='lista' className="bg-white rounded-lg shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Chamados</h2>
         {user?.role !== 'TECH' && (
@@ -113,7 +126,7 @@ export default function TicketsList() {
                         statusColors[ticket.status] || 'bg-gray-100'
                       }`}
                     >
-                      {ticket.status}
+                      {statusMap[ticket.status] || ticket.status}
                     </span>
                   </td>
                   <td className="px-4 py-3">
@@ -122,7 +135,7 @@ export default function TicketsList() {
                         priorityColors[ticket.priority] || 'bg-gray-100'
                       }`}
                     >
-                      {ticket.priority}
+                      {priorityMap[ticket.priority] || ticket.priority}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">

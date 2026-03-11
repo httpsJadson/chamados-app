@@ -4,13 +4,14 @@ export interface Ticket {
   id: string;
   title: string;
   description: string;
-  status: 'ABERTO' | 'ATRIBUIDO' | 'EM_PROGRESSO' | 'RESOLVIDO' | 'FECHADO';
-  priority: 'BAIXA' | 'MEDIA' | 'ALTA' | 'CRITICA';
+  status: 'OPEN' | 'IN_PROGRESS' | 'WAITING_CUSTOMER' | 'RESOLVED' | 'CLOSED';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
   userId: string;
-  assignedTechId?: string;
+  assignedToId?: string;
   diagnosis?: string;
   createdAt: string;
   updatedAt: string;
+  assignedTechId?: string; // compatibility
 }
 
 export interface CreateTicketRequest {
@@ -19,11 +20,11 @@ export interface CreateTicketRequest {
 }
 
 export interface UpdateTicketStatusRequest {
-  status: 'ABERTO' | 'ATRIBUIDO' | 'EM_PROGRESSO' | 'RESOLVIDO' | 'FECHADO';
+  status: 'OPEN' | 'IN_PROGRESS' | 'WAITING_CUSTOMER' | 'RESOLVED' | 'CLOSED';
 }
 
 export interface UpdateTicketPriorityRequest {
-  priority: 'BAIXA' | 'MEDIA' | 'ALTA' | 'CRITICA';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
 }
 
 export interface UpdateTicketDiagnosisRequest {

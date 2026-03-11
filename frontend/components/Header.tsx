@@ -16,7 +16,7 @@ export default function Header() {
   if (!user) return null;
 
   return (
-    <header className="bg-blue-600 text-white shadow-lg">
+    <header className="bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-6">
@@ -41,7 +41,7 @@ export default function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm">
+            <span className="text-sm font-sans">
               {user.name} ({user.role})
             </span>
             <button
