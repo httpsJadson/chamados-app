@@ -14,7 +14,7 @@ export default function UsersPage() {
     email: '',
     password: '',
     name: '',
-    role: 'USER' as 'ADMIN' | 'TECH' | 'USER',
+    role: 'EMPLOYEE' as 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -38,7 +38,7 @@ export default function UsersPage() {
     try {
       await userService.create(formData);
       setSuccess('Usuário criado com sucesso!');
-      setFormData({ email: '', password: '', name: '', role: 'USER' });
+      setFormData({ email: '', password: '', name: '', role: 'EMPLOYEE' });
       setShowCreateForm(false);
       // Recarregar lista
       window.location.reload();
@@ -93,7 +93,7 @@ export default function UsersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required
               />
             </div>
@@ -108,7 +108,7 @@ export default function UsersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required
               />
             </div>
@@ -123,7 +123,7 @@ export default function UsersPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
                 required
               />
             </div>
@@ -137,13 +137,13 @@ export default function UsersPage() {
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    role: e.target.value as 'ADMIN' | 'TECH' | 'USER',
+                    role: e.target.value as 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE',
                   })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
               >
-                <option value="USER">Usuário</option>
-                <option value="TECH">Técnico</option>
+                <option value="EMPLOYEE">Usuário</option>
+                <option value="TECHNICIAN">Técnico</option>
                 <option value="ADMIN">Administrador</option>
               </select>
             </div>

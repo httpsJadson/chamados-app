@@ -4,14 +4,14 @@ export interface Message {
   id: string;
   content: string;
   ticketId: string;
-  userId: string;
-  user?: {
+  createdAt: string;
+  author?: {
     id: string;
     name: string;
     email: string;
+    role: 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE';
+    perfilUrl?: string;
   };
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface CreateMessageRequest {

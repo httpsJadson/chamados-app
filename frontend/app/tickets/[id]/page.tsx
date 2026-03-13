@@ -31,12 +31,7 @@ export default function TicketDetailPage({
 
   return (
     <div className="space-y-6">
-      <a
-        href="/tickets"
-        className="text-blue-600 hover:text-blue-800 font-semibold"
-      >
-        ← Voltar para chamados
-      </a>
+
       <TicketDetails ticketId={resolvedParams.id} />
     </div>
   );

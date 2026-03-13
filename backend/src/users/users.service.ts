@@ -25,6 +25,7 @@ export class UsersService {
           name: createUserDto.name,
           password: hashPassword,
           role: createUserDto.role,
+          profileUrl: createUserDto.profileUrl,
         },
         select: {
           id: true,
@@ -103,6 +104,14 @@ export class UsersService {
 
       if (updateUserDto.password !== undefined) {
         data.password = await bcrypt.hash(updateUserDto.password, 10);
+      }
+
+      if (updateUserDto.role !== undefined) {
+        data.role = updateUserDto.role;
+      }
+
+      if (updateUserDto.profileUrl !== undefined) {
+        data.profileUrl = updateUserDto.profileUrl;
       }
 
       const updatedUser = await this.prisma.user.update({

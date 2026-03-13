@@ -6,7 +6,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'ADMIN' | 'TECH' | 'USER';
+  role: 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE';
   perfilUrl?: string;
 }
 

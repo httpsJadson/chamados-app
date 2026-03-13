@@ -1,4 +1,5 @@
 import api from './api';
+import { User } from './user-service';
 
 export interface Ticket {
   id: string;
@@ -7,11 +8,10 @@ export interface Ticket {
   status: 'OPEN' | 'IN_PROGRESS' | 'WAITING_CUSTOMER' | 'RESOLVED' | 'CLOSED';
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   userId: string;
-  assignedToId?: string;
+  assignedTo?: User;
   diagnosis?: string;
   createdAt: string;
   updatedAt: string;
-  assignedTechId?: string; // compatibility
 }
 
 export interface CreateTicketRequest {

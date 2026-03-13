@@ -4,11 +4,11 @@
 
 @admin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODVlZDg5Yi04NTg2LTQxNzUtYmNiNC00ZjQ3YjQ5ZGJiOWUiLCJlbWFpbCI6ImphZHNvbi50ZXN0ZUBlbXByZXNhLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc3MjkxMDIwNiwiZXhwIjoxNzczNTE1MDA2LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.nMmyXNp7kGazEFvcFFLRrhljxxsnhYWzOjsiQw14LIQ
 
-@tecnico = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWI2M2M1MC05OTI2LTRhNzYtYjFjYy1mYmIzZjYzNTFiMjQiLCJlbWFpbCI6InRlY25pY28udGVzdGVAZW1wcmVzYS5jb20iLCJyb2xlIjoiVEVDSE5JQ0lBTiIsImlhdCI6MTc3MjkxMDI3MCwiZXhwIjoxNzczNTE1MDcwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.EPuLvQmCsiYpE9Q4gcJyjdoROIAZvzk4ixSflLw33yc
+@tecnico = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YTRiNTdlNi1iYmQyLTQ3OGYtOTM4OC0yYjVlNTZkZTI3MWIiLCJlbWFpbCI6ImphZHNvbi5zaWx2YTJAZW1wcmVzYS5jb20iLCJyb2xlIjoiVEVDSE5JQ0lBTiIsImlhdCI6MTc3MzM2NjQzNiwiZXhwIjoxNzczOTcxMjM2LCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAifQ.L0xPdav4e7ifD6KzjKV1tntxVxrJYDBfz7ZE33dEmP0
 
 @userId = bd928c91-d540-4c44-b5dd-7ccbc07eff20
 
-@ticketId = a1cf9a3b-1c54-4731-a59a-3d00ee87b18f
+@ticketId = 7cf3f8dc-4ecd-4448-91c4-f360e78b5fc7
 
 @messageId =
 
@@ -17,7 +17,7 @@ POST {{baseurl}}/auth/login?offset=10&limit=10&order=DESC
 Content-Type: application/json
 
 {
-  "email": "tecnico.teste2@empresa.com",
+  "email": "jadson.silva2@empresa.com",
   "password": "123456"
 }
 
@@ -75,7 +75,7 @@ Authorization: Bearer {{tecnico}}
 
 ### Get ticket by id
 GET {{baseurl}}/tickets/{{ticketId}}
-Authorization: Bearer {{}}
+Authorization: Bearer {{tecnico}}
 
 # Update ticket priority
 PATCH {{baseurl}}/tickets/{{ticketId}}/priority

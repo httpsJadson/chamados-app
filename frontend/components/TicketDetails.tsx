@@ -47,7 +47,7 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
   const [newStatus, setNewStatus] = useState('');
   const [newPriority, setNewPriority] = useState('');
   const [newDiagnosis, setNewDiagnosis] = useState('');
-  const { user } = useAuthStore();
+  const {user} = useAuthStore();
 
   useEffect(() => {
     loadData();
@@ -149,7 +149,13 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="flex justify-between items-start mb-4">
+        <a
+          href="/tickets"
+          className="text-blue-600 hover:text-blue-800 font-semibold"
+        >
+            ← Voltar para chamados
+        </a>
+        <div className="flex justify-between items-start my-4">
           <h1 className="text-3xl font-bold text-gray-800">{ticket.title}</h1>
           <div className="flex gap-2">
             <span
@@ -177,84 +183,98 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
           </div>
         )}
 
-        {user?.role === 'TECH' && (
+        {user?.role === 'TECHNICIAN' && (
           <div className="border-t pt-6 space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Status
-              </label>
-              <div className="flex gap-2">
-                <select
-                  value={newStatus}
-                  onChange={(e) => setNewStatus(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                >
-                  <option value="OPEN">Aberto</option>
-                  <option value="IN_PROGRESS">Em Progresso</option>
-                  <option value="WAITING_CUSTOMER">Aguardando Cliente</option>
-                  <option value="RESOLVED">Resolvido</option>
-                  <option value="CLOSED">Fechado</option>
-                </select>
-                <button
-                  onClick={handleStatusChange}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-                >
-                  Atualizar
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Prioridade
-              </label>
-              <div className="flex gap-2">
-                <select
-                  value={newPriority}
-                  onChange={(e) => setNewPriority(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-                >
-                  <option value="LOW">Baixa</option>
-                  <option value="MEDIUM">Média</option>
-                  <option value="HIGH">Alta</option>
-                </select>
-                <button
-                  onClick={handlePriorityChange}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-                >
-                  Atualizar
-                </button>
-              </div>
-            </div>
-
-            {!ticket.assignedTechId && (
+            {/* Seção de atribuição - visível quando NÃO está atribuído */}
+            {!ticket.assignedTo?.id ? (
               <button
                 onClick={handleAssignToMe}
-                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition"
               >
                 Atribuir a mim
               </button>
+            ) : ticket.assignedTo?.id === user?.id ? (
+              <div className="w-full bg-green-100 border border-green-400 text-green-800 px-4 py-2 rounded-lg text-center font-semibold">
+                ✓ Atribuído a você
+              </div>
+            ) : (
+              <div className="w-full bg-gray-100 border border-gray-400 text-gray-800 px-4 py-2 rounded-lg text-center font-semibold">
+                ⊘ Já atribuído a outro técnico
+              </div>
             )}
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Diagnóstico
-              </label>
-              <div className="flex gap-2">
-                <textarea
-                  value={newDiagnosis}
-                  onChange={(e) => setNewDiagnosis(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 h-24"
-                  placeholder="Descreva o diagnóstico do problema..."
-                />
-                <button
-                  onClick={handleDiagnosisUpdate}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg h-fit"
-                >
-                  Salvar
-                </button>
-              </div>
-            </div>
+            {/* Controles - visível apenas quando está atribuído */}
+            {ticket.assignedTo?.id === user?.id && (
+              <>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Status
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      value={newStatus}
+                      onChange={(e) => setNewStatus(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    >
+                      <option value="OPEN">Aberto</option>
+                      <option value="IN_PROGRESS">Em Progresso</option>
+                      <option value="WAITING_CUSTOMER">Aguardando Cliente</option>
+                      <option value="RESOLVED">Resolvido</option>
+                      <option value="CLOSED">Fechado</option>
+                    </select>
+                    <button
+                      onClick={handleStatusChange}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                    >
+                      Atualizar
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Prioridade
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      value={newPriority}
+                      onChange={(e) => setNewPriority(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    >
+                      <option value="LOW">Baixa</option>
+                      <option value="MEDIUM">Média</option>
+                      <option value="HIGH">Alta</option>
+                    </select>
+                    <button
+                      onClick={handlePriorityChange}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                    >
+                      Atualizar
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Diagnóstico
+                  </label>
+                  <div className="flex gap-2">
+                    <textarea
+                      value={newDiagnosis}
+                      onChange={(e) => setNewDiagnosis(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600 h-24"
+                      placeholder="Descreva o diagnóstico do problema..."
+                    />
+                    <button
+                      onClick={handleDiagnosisUpdate}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg h-fit"
+                    >
+                      Salvar
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -272,7 +292,7 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
               <div key={msg.id} className="bg-gray-50 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <p className="font-semibold text-gray-800">
-                    {msg.user?.name || 'Usuário'}
+                    {msg.author?.name} ({msg.author?.role})
                   </p>
                   <span className="text-xs text-gray-500">
                     {new Date(msg.createdAt).toLocaleString('pt-BR')}
@@ -289,7 +309,7 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Adicionar comentário..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 h-24"
+            className="w-full px-4 py-2 border text-black border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 h-24"
           />
           <button
             type="submit"

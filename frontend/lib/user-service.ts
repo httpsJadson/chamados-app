@@ -4,8 +4,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'ADMIN' | 'TECH' | 'USER';
-  perfilUrl?: string;
+  role: 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE';
+  profileUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -14,14 +14,15 @@ export interface CreateUserRequest {
   email: string;
   password: string;
   name: string;
-  role: 'ADMIN' | 'TECH' | 'USER';
+  role: 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE';
 }
 
 export interface UpdateUserRequest {
   email?: string;
   name?: string;
   password?: string;
-  perfilUrl?: string;
+  profileUrl?: string;
+  role?: 'ADMIN' | 'TECHNICIAN' | 'EMPLOYEE';
 }
 
 export const userService = {

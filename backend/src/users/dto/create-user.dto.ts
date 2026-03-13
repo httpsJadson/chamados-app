@@ -16,5 +16,6 @@ export class CreateUserDto {
   role?: Role;
 
   @IsOptional()
-  perfilUrl?: string;
+  @IsString()
+  profileUrl?: string;
 }

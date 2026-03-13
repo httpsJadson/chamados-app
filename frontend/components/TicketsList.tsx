@@ -72,7 +72,7 @@ export default function TicketsList() {
     <div id='lista' className="bg-white rounded-lg shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Chamados</h2>
-        {user?.role !== 'TECH' && (
+        {user?.role !== 'TECHNICIAN' && (
           <Link
             href="/tickets/new"
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
@@ -139,7 +139,7 @@ export default function TicketsList() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {ticket.assignedTechId ? 'Atribuído' : 'Não atribuído'}
+                    {ticket.assignedTo?.id ? ticket.assignedTo?.name   : 'Não atribuído'}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
                     {new Date(ticket.createdAt).toLocaleDateString('pt-BR')}

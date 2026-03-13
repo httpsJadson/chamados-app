@@ -35,7 +35,7 @@ export default function ProfilePage() {
     try {
       const response = await userService.update(user!.id, {
         name,
-        perfilUrl,
+        profileUrl: perfilUrl,
       });
 
       setUser(response.data);
@@ -90,7 +90,7 @@ export default function ProfilePage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
               required
             />
           </div>
@@ -103,7 +103,7 @@ export default function ProfilePage() {
               type="url"
               value={perfilUrl}
               onChange={(e) => setPerfilUrl(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="https://exemplo.com/foto.jpg"
             />
           </div>

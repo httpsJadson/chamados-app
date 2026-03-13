@@ -13,12 +13,12 @@ export default function NewTicketPage() {
     if (!isAuthenticated) {
       router.push('/login');
     }
-    if (user?.role === 'TECH') {
+    if (user?.role === 'TECHNICIAN') {
       router.push('/tickets');
     }
   }, [isAuthenticated, user, router]);
 
-  if (!isAuthenticated || user?.role === 'TECH') {
+  if (!isAuthenticated || user?.role === 'TECHNICIAN') {
     return null;
   }
 
