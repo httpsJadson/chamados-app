@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ### List users (requires JWT)
 GET {{baseurl}}/users
-Authorization: Bearer {{employee}}
+Authorization: Bearer {{admin}}
 
 ### Get a single user
 GET {{baseurl}}/users/{{userId}}
@@ -54,8 +54,8 @@ Content-Type: application/json
 }
 
 ### Delete user
-DELETE {{baseurl}}/users/{{userId}}
-Authorization: Bearer {{}}
+DELETE http://localhost:3004/users/99578f15-cf9a-451d-afc9-6ef5a01a9e2
+Authorization: Bearer {{admin}}
 
 ### Tickets
 
@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ### Update ticket assigned
-PATCH {{baseurl}}/tickets/{{ticketId}}/assigned
+PATCH http://localhost:3004/tickets/7793a1c4-c447-4652-b739-94818317ddaa/assigned
 Authorization: Bearer {{tecnico}}
 
 ### Update ticket status
@@ -128,3 +128,7 @@ Content-Type: application/json
 GET {{baseurl}}/messages/a1cf9a3b-1c54-4731-a59a-3d00ee87b18f
 Authorization: Bearer {{admin}}
 
+###
+GET http://localhost:3004/messages/7793a1c4-c447-4652-b739-94818317ddaa
+Authorization: Bearer {{employee}}
+###

@@ -30,7 +30,7 @@ export class UsersService {
           id: true,
           name: true,
           email: true,
-          perfilUrl: true,
+          profileUrl: true,
           role: true,
           // Exclude password from response
         },
@@ -57,7 +57,7 @@ export class UsersService {
         name: true,
         email: true,
         role: true,
-        perfilUrl: true,  
+        profileUrl: true,  
         // Exclude password
       },
     });
@@ -73,7 +73,7 @@ export class UsersService {
         name: true,
         email: true,
         role: true,
-        perfilUrl: true,
+        profileUrl: true,
         // Exclude password
       },
     });
@@ -113,7 +113,7 @@ export class UsersService {
           name: true,
           email: true,
           role: true,
-          perfilUrl: true
+          profileUrl: true
           // Exclude password from response
         },
       });
@@ -133,11 +133,9 @@ export class UsersService {
       });
       return { message: `User with ID ${id} deleted successfully` };
     } catch (error) {
+      console.log(error);
       if (error.code === 'P2025') {
         throw new NotFoundException(`User with ID ${id} not found`);
-      }
-      if (error.code === 'P2002') {
-        throw new BadRequestException('Email already exists');
       }
       throw new InternalServerErrorException('Failed to delete user');
     }

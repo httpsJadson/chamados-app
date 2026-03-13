@@ -24,10 +24,10 @@ export class TicketsController {
     return this.ticketsService.create(createTicketDto, req[REQUEST_TOKEN_PAYLOAD_KEY]);
   }
 
-  @Roles(Role.TECH, Role.ADMIN)
+  @Roles(Role.TECH, Role.ADMIN, Role.USER)
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  findAll(@Req() req: Request) {
+    return this.ticketsService.findAll(req[REQUEST_TOKEN_PAYLOAD_KEY]);
   }
 
   @Roles(Role.TECH, Role.USER, Role.ADMIN)
@@ -61,7 +61,7 @@ export class TicketsController {
     return this.ticketsService.updateDiagnosis(id, updateTicketDiagnosisDto);
   }
 
-  @Roles(Role.ADMIN, Role.TECH)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ticketsService.remove(id);

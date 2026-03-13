@@ -42,12 +42,18 @@ export class TicketsService {
     });
   }
 
-  async findAll() {
-    return this.prisma.ticket.findMany({
-      select: {
-        id: true,
-        title: true,
-        description: true,
+  async findAll(req: Request) {
+    const userId = req['sub'];
+    const userRole = req['role'];
+    if (userRole !== 'TECHNICIAN') {
+      return this.prisma.ticket.findMany({
+        where: {
+          createdById: userId,
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
         status: true,
         priority: true,
         closedAt: true,
@@ -73,7 +79,39 @@ export class TicketsService {
           },
         },
       },
-    });
+    })} else {
+      return this.prisma.ticket.findMany({
+        select: {
+          id: true,
+          title: true,
+          description: true,
+        status: true,
+        priority: true,
+        closedAt: true,
+        createdAt: true,
+        updatedAt: true,
+        diagnosis: true,
+        createdBy: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            
+          },
+        },
+        assignedTo: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+           
+          },
+        },
+      },
+      });
+    }
   }
 
   async findOne(id: string) {
@@ -223,10 +261,20 @@ export class TicketsService {
   async updateAssigned(id: string, req: Request) {
 
     const assignedId = req['sub'];
+    const haveAssigned = await this.prisma.ticket.findUnique({
+      where: { id },
+      select: {
+        assignedToId: true,
+      },
+    }) ? true : false;
 
     if (req['role'] !== 'TECHNICIAN') {
       throw new BadRequestException('Assigned user must have TECHNICIAN role');
     }
+
+    // if (haveAssigned) {
+    //   throw new BadRequestException('User cannot be assigned to their own ticket');
+    // }
 
     const updateData: any = { assignedToId: assignedId };
 
