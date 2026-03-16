@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function Header() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -13,7 +13,7 @@ export default function Header() {
     router.push('/login');
   };
 
-  if (!user) return null;
+  if (!isAuthenticated || !user) return null;
 
   return (
     <header className="bg-blue-600 text-white">

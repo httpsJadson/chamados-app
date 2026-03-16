@@ -1,4 +1,5 @@
 import api from './api';
+import { Message } from './message-service';
 import { User } from './user-service';
 
 export interface Ticket {
@@ -7,9 +8,10 @@ export interface Ticket {
   description: string;
   status: 'OPEN' | 'IN_PROGRESS' | 'WAITING_CUSTOMER' | 'RESOLVED' | 'CLOSED';
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
-  userId: string;
+  createdBy: User;
   assignedTo?: User;
   diagnosis?: string;
+  messages?: Message[];
   createdAt: string;
   updatedAt: string;
 }

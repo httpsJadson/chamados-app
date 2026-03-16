@@ -83,9 +83,9 @@ export default function LoginForm() {
 
         <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
           <p className="font-semibold mb-2">Credenciais de teste:</p>
-          <p>Admin: admin@teste.com / senha123</p>
-          <p>Tech: tech@teste.com / senha123</p>
-          <p>Usuario: user@teste.com / senha123</p>
+          <p>Admin: admin@empresa.com / 123456</p>
+          <p>Tech: tecnico@empresa.com / 123456</p>
+          <p>Usuario: funcionario@empresa.com / 123456</p>
         </div>
       </div>
     </div>

@@ -8,67 +8,61 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  name     String
-  password String
-  role     Role   @default(EMPLOYEE)
-
-  profileUrl String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String
+  createdAt       DateTime  @default(now())
+  password        String // Dica de App: Lembre-se de não retornar este campo nas respostas da API
+  role            Role      @default(EMPLOYEE)
+  updatedAt       DateTime  @updatedAt
+  profileUrl      String?
   messages        Message[]
   assignedTickets Ticket[]  @relation("AssignedTickets")
   createdTickets  Ticket[]  @relation("CreatedTickets")
-
-  @@index([role])
 }
 
 model Ticket {
-  id          String @id @default(uuid())
-  title       String
-  description String
-
-  status   TicketStatus   @default(OPEN)
-  priority TicketPriority @default(MEDIUM)
-
+  id           String         @id @default(uuid())
+  title        String
+  description  String
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
   createdById  String
   assignedToId String?
+  closedAt     DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  diagnosis    String?
+  messages     Message[]
 
-  diagnosis String?
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  closedAt  DateTime?
-
-  createdBy  User  @relation("CreatedTickets", fields: [createdById], references: [id], onDelete: Cascade)
+  // CORREÇÃO: Se o técnico for deletado, o ticket volta a ficar sem responsável (SetNull) ao invés de dar erro
   assignedTo User? @relation("AssignedTickets", fields: [assignedToId], references: [id], onDelete: SetNull)
 
-  messages Message[]
+  // CORREÇÃO: Se o criador for deletado, o ticket é deletado junto (Cascade). 
+  // Nota: Se a sua regra de negócio diz que tickets não podem ser apagados nunca, mude para "Restrict" e use soft-delete no User.
+  createdBy User @relation("CreatedTickets", fields: [createdById], references: [id], onDelete: Cascade)
 
   @@index([status])
   @@index([priority])
   @@index([assignedToId])
-  @@index([createdById])
+  @@index([createdById]) // CORREÇÃO: Índice adicionado para acelerar buscas por tickets criados por um usuário
 }
 
 model Message {
-  id      String @id @default(uuid())
-  content String
-
-  ticketId String
-  authorId String
-
+  id        String   @id @default(uuid())
+  content   String
+  ticketId  String
+  authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // CORREÇÃO: Se o usuário for deletado, suas mensagens são limpas (Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
-  @@index([authorId])
+  @@index([authorId]) // CORREÇÃO: Índice adicionado para evitar lentidão ao buscar histórico de mensagens de um usuário
 }
 
 enum Role {

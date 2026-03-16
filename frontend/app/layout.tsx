@@ -1,11 +1,8 @@
-'use client';
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import { useAuthStore } from "@/lib/auth-store";
-import { useEffect, useState } from "react";
+import AuthProvider from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,42 +14,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const { initializeAuth, isAuthenticated, isLoading } = useAuthStore();
-  const [mounted, setMounted] = useState(false);
+export const metadata: Metadata = {
+  title: "Sistema de Chamados",
+  description: "Sistema de gerenciamento de chamados e tickets de suporte",
+  keywords: ["chamados", "tickets", "suporte", "sistema"],
+  authors: [{ name: "Sistema de Chamados" }],
+  icons: {
+    icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: "Sistema de Chamados",
+    description: "Sistema de gerenciamento de chamados e tickets de suporte",
+    type: "website",
+    locale: "pt_BR",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
-  useEffect(() => {
-    setMounted(true);
-    initializeAuth();
-  }, []);
-
-  if (!mounted || isLoading) {
-    return (
-      <html lang="pt-BR">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <div className="flex items-center justify-center min-h-screen">
-            Carregando...
-          </div>
-        </body>
-      </html>
-    );
-  }
-
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100!`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
       >
-        {isAuthenticated && <Header />}
-        <main className={isAuthenticated ? "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-100" : ""}>
-          {children}
-        </main>
+        <AuthProvider>
+          <Header />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-100">
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );

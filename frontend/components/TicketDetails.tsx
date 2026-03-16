@@ -57,13 +57,18 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
     try {
       setIsLoading(true);
       const ticketResponse = await ticketService.getById(ticketId);
-      setTicket(ticketResponse.data);
-      setNewStatus(ticketResponse.data.status);
-      setNewPriority(ticketResponse.data.priority);
-      setNewDiagnosis(ticketResponse.data.diagnosis || '');
+      const ticketData = ticketResponse.data;
+      setTicket(ticketData);
+      setNewStatus(ticketData.status);
+      setNewPriority(ticketData.priority);
+      setNewDiagnosis(ticketData.diagnosis || '');
 
-      const messagesResponse = await messageService.getByTicketId(ticketId);
-      setMessages(messagesResponse.data);
+      if (ticketData.assignedTo?.id === user?.id) {
+        const messagesResponse = await messageService.getByTicketId(ticketId);
+        setMessages(messagesResponse.data);
+      } else {
+        setMessages([]); // Limpa as mensagens se não estiver atribuído ao usuário
+      }
     } catch (err: any) {
       setError('Erro ao carregar dados do chamado');
       console.error(err);
@@ -155,8 +160,10 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
         >
             ← Voltar para chamados
         </a>
-        <div className="flex justify-between items-start my-4">
+        <p className="text-gray-600 mt-6">{ticket.createdBy.name} ({ticket.createdBy.role}) {new Date(ticket.createdAt).toLocaleDateString('pt-BR')}</p>
+        <div className="flex justify-between items-start mb-4">
           <h1 className="text-3xl font-bold text-gray-800">{ticket.title}</h1>
+          
           <div className="flex gap-2">
             <span
               className={`px-3 py-1 rounded-lg text-sm font-semibold ${
@@ -175,7 +182,13 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
           </div>
         </div>
 
-        <p className="text-gray-600 mb-6">{ticket.description}</p>
+        <p className="text-gray-600 mb-2"><span className="font-semibold">Descrição:</span> {ticket.description}</p>
+
+        {ticket.diagnosis && (
+          <p className="text-gray-600 mb-2"><span className="font-semibold">Diagnóstico:</span> {ticket.diagnosis}</p>
+        )}
+
+        <p className="text-gray-600 mb-2"><span className="font-semibold">Técnico:</span> {ticket.assignedTo?.name || 'Não atribuído'}</p>
 
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -204,7 +217,7 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
             )}
 
             {/* Controles - visível apenas quando está atribuído */}
-            {ticket.assignedTo?.id === user?.id && (
+            {ticket.assignedTo?.id === user?.id ? (
               <>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -274,21 +287,23 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
                   </div>
                 </div>
               </>
-            )}
+             ): null}
           </div>
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Mensagens</h2>
+      {ticket.assignedTo?.id === user?.id || ticket.createdBy.id === user?.id  ? (
+        <>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Mensagens</h2>
 
         <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-          {messages.length === 0 ? (
+          {ticket.messages?.length === 0 ? (
             <p className="text-gray-500 text-center py-4">
               Nenhuma mensagem ainda
             </p>
           ) : (
-            messages.map((msg) => (
+            ticket.messages?.map((msg) => (
               <div key={msg.id} className="bg-gray-50 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <p className="font-semibold text-gray-800">
@@ -320,6 +335,11 @@ export default function TicketDetails({ ticketId }: TicketDetailsProps) {
           </button>
         </form>
       </div>
-    </div>
-  );
-}
+  
+        </>
+      ) : (
+        <>
+        </>
+      )};
+  </div>
+)}
