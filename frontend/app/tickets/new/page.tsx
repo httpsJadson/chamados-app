@@ -23,7 +23,7 @@ export default function NewTicketPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
       <h1 className="text-4xl font-bold text-gray-800">Novo Chamado</h1>
       <CreateTicketForm />
     </div>

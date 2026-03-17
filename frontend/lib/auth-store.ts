@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { SetState, GetState } from 'zustand';
 import api from './api';
 
 export interface User {
@@ -24,7 +23,7 @@ interface AuthStore {
   initializeAuth: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set: SetState<AuthStore>, get: GetState<AuthStore>) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
   token: null,
   isAuthenticated: false,
@@ -35,8 +34,11 @@ export const useAuthStore = create<AuthStore>((set: SetState<AuthStore>, get: Ge
       const response = await api.post('/auth/login', { email, password });
       const { access_token, user } = response.data;
 
-      localStorage.setItem('token', access_token);
-      localStorage.setItem('user', JSON.stringify(user));
+      // Safe localStorage access
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('user', JSON.stringify(user));
+      }
 
       set({ user, token: access_token, isAuthenticated: true });
     } catch (error) {
@@ -45,8 +47,10 @@ export const useAuthStore = create<AuthStore>((set: SetState<AuthStore>, get: Ge
   },
 
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
     set({ user: null, token: null, isAuthenticated: false });
   },
 
@@ -54,7 +58,9 @@ export const useAuthStore = create<AuthStore>((set: SetState<AuthStore>, get: Ge
     try {
       const response = await api.get('/users/profile');
       const user = response.data;
-      localStorage.setItem('user', JSON.stringify(user));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('user', JSON.stringify(user));
+      }
       set({ user });
       return user;
     } catch (error) {
@@ -67,11 +73,13 @@ export const useAuthStore = create<AuthStore>((set: SetState<AuthStore>, get: Ge
   setToken: (token: string) => set({ token, isAuthenticated: true }),
 
   initializeAuth: () => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
 
-    if (token && user) {
-      set({ token, user: JSON.parse(user), isAuthenticated: true });
+      if (token && user) {
+        set({ token, user: JSON.parse(user), isAuthenticated: true });
+      }
     }
     set({ isLoading: false });
   },

@@ -20,8 +20,8 @@ export default function Home() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="bg-linear-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8">
+    <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+      <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8">
         <h1 className="text-4xl font-bold mb-2">Bem-vindo, {user?.name}!</h1>
         <p className="text-blue-100">Sistema de gerenciamento de chamados de TI</p>
       </div>

@@ -56,7 +56,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
       <h1 className="text-4xl font-bold text-gray-800">Gerenciar Usuários</h1>
 
       {error && (

@@ -30,7 +30,7 @@ export default function TicketDetailPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
 
       <TicketDetails ticketId={resolvedParams.id} />
     </div>
